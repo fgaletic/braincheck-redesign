@@ -42,3 +42,6 @@ yarn-error.*
 
 # AI tool settings
 .claude/
+
+# Personal application material
+docs/one-pager.*
