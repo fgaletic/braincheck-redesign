@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BRAINCheck redesign: concept prototype</title>
+<style>
+  @page { size: A4; margin: 11mm 12mm; }
+  * { box-sizing: border-box; }
+  :root { --ink:#0f172a; --soft:#475569; --mute:#94a3b8; --line:#e2e8f0; --brand:#d92d3f; --tint:#fdecee; }
+  html, body { margin: 0; color: var(--ink); font: 9.2pt/1.38 "Segoe UI", system-ui, Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; border-bottom: 2px solid var(--brand); padding-bottom: 6px; }
+  h1 { margin: 0; font-size: 19pt; letter-spacing: -0.4px; line-height: 1.1; }
+  h1 span { color: var(--brand); }
+  .sub { color: var(--soft); font-size: 9pt; margin-top: 3px; }
+  .who { text-align: right; font-size: 8.6pt; color: var(--soft); line-height: 1.35; }
+  .who b { color: var(--ink); font-size: 10pt; }
+  .shots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; margin: 11px 0 9px; }
+  figure { margin: 0; text-align: center; }
+  figure img { width: 100%; display: block; border-radius: 9px; border: 1px solid var(--line); box-shadow: 0 2px 6px rgba(15,23,42,.12); }
+  figcaption { margin-top: 4px; font-size: 7.8pt; color: var(--soft); line-height: 1.25; }
+  figcaption b { color: var(--ink); display: block; font-size: 8.2pt; }
+  .cols { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 14px; }
+  h2 { margin: 0 0 4px; font-size: 8.4pt; letter-spacing: .09em; text-transform: uppercase; color: var(--brand); }
+  ul { margin: 0; padding-left: 13px; }
+  li { margin: 0 0 3px; }
+  table { width: 100%; border-collapse: collapse; font-size: 8.3pt; }
+  td { padding: 2.5px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td:first-child { width: 34px; color: var(--mute); font-weight: 600; }
+  .box { background: var(--tint); border-radius: 8px; padding: 7px 9px; margin-top: 8px; font-size: 8.4pt; }
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+  .tags span { background: #f1f5f9; border: 1px solid var(--line); border-radius: 99px; padding: 1px 7px; font-size: 7.8pt; color: var(--soft); }
+  footer { margin-top: 9px; border-top: 1px solid var(--line); padding-top: 5px; font-size: 7.6pt; color: var(--mute); line-height: 1.3; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>BRAIN<span>Check</span> redesign</h1>
+    <div class="sub">A concept prototype of the app flow in the public IFU, rebuilt in React Native / Expo with a clearer interface.</div>
+  </div>
+  <div class="who"><b>Filip Galetic</b><br>Full-stack engineer<br>github.com/fgaletic · filip@allio.li</div>
+</header>
+
+<section class="shots">
+  <figure><img src="screens/03-instructions.jpg" alt=""><figcaption><b>Guided sample steps</b>One task per screen, exact drop counts called out</figcaption></figure>
+  <figure><img src="screens/04-timer-warning.jpg" alt=""><figcaption><b>Last 2 minutes</b>Ring turns red, timeline shows all phases</figcaption></figure>
+  <figure><img src="screens/05-timer-scan.jpg" alt=""><figcaption><b>Scan window</b>5 minutes, then the cassette is discarded</figcaption></figure>
+  <figure><img src="screens/06-scan.jpg" alt=""><figcaption><b>Scan</b>Frame turns green and scans on its own (simulated)</figcaption></figure>
+  <figure><img src="screens/07-result.jpg" alt=""><figcaption><b>Result</b>Status, value and position in the measuring range</figcaption></figure>
+</section>
+
+<section class="cols">
+  <div>
+    <h2>What I changed, and why</h2>
+    <ul>
+      <li><b>Status is never colour alone.</b> Valid, Incomplete and Invalid are always icon plus text.</li>
+      <li><b>Glove-friendly.</b> 58 px buttons and 56 px fields, one task per screen.</li>
+      <li><b>The timer is the main object.</b> The IFU has two thresholds and an expiry; the ring, colour and a 0 / 15 / 20 minute timeline make them visible at a glance.</li>
+      <li><b>No interpretation.</b> Results show where a value sits in the measuring range, with "&lt;2000" and "&gt;120" shown as the IFU specifies. No normal or abnormal labels.</li>
+      <li><b>Deviations are visible.</b> A skipped timer needs a confirmation and is flagged on the result.</li>
+      <li><b>Scan conditions at the point of need.</b> Surface, shadows and steadiness are text in the IFU; here they sit on the scan screen.</li>
+    </ul>
+    <div class="box"><b>Try it fast:</b> a prototype control speeds the timer up (30× / 60×) and picks the simulated outcome (valid, out of range, incomplete, invalid).</div>
+  </div>
+
+  <div>
+    <h2>Coverage of the IFU</h2>
+    <table>
+      <tr><td>7.1</td><td>Four-slide tutorial, skip, "don't show again"</td></tr>
+      <tr><td>7.2</td><td>Lot and patient ID, five guided steps</td></tr>
+      <tr><td>7.3</td><td>15 min timer, red at 13 min, 5 min scan window, timed-out state, skip with confirmation</td></tr>
+      <tr><td>7.3</td><td>Alignment grid, auto-scan (simulated)</td></tr>
+      <tr><td>7.4</td><td>Valid / Invalid / Incomplete, units, limit display, 30-day auto-delete</td></tr>
+      <tr><td>8</td><td>About: support, privacy, terms, regulatory (inert)</td></tr>
+      <tr><td>+</td><td>English and Spanish, switch in About</td></tr>
+    </table>
+  </div>
+
+  <div>
+    <h2>Engineering</h2>
+    <ul>
+      <li><b>Expo 58, React Native 0.88, strict TypeScript.</b> Runs on web, iOS and Android; checked on web.</li>
+      <li><b>Pure domain layer</b> for timer phases, classification, range display and retention, with no UI imports.</li>
+      <li><b>23 unit tests</b> and a CI workflow (typecheck + tests).</li>
+      <li><b>Traceability table</b> in the README: requirement IDs mapped to IFU sections and tests.</li>
+      <li><b>Typed i18n dictionary:</b> a missing Spanish key fails the build.</li>
+    </ul>
+    <div class="tags"><span>React Native</span><span>Expo</span><span>TypeScript</span><span>Jest</span><span>GitHub Actions</span><span>i18n</span></div>
+    <h2 style="margin-top:8px">Left out on purpose</h2>
+    <ul>
+      <li>Real camera capture and image analysis</li>
+      <li>Phone allow-list, storage, sync, auth</li>
+      <li>Risk file and V&amp;V records</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Unofficial concept built from the public BRAINCheck Instructions for Use (ABC-IFU-001 v1.0, July 2022). Synthetic data only, simulated camera. Not a medical device and not clinical advice. Not affiliated with or endorsed by ABCDx; the network glyph is an original drawing, not their logo. The Spanish text is a draft pending native review.
+</footer>
+</body>
+</html>
